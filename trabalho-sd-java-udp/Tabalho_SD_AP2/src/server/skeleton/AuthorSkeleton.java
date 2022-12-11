@@ -7,19 +7,18 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import server.model.Book;
-import server.model.Usuario;
-import server.servant.BookServant;
+import server.model.Author;
+import server.servant.AuthorServant;
 
-public class BookSkeleton {
+public class AuthorSkeleton {
 
-	private BookServant bookServant;
-
-	public BookSkeleton() {
-		this.bookServant = new BookServant();
+	private AuthorServant authorServant;
+	
+	public AuthorSkeleton() {
+		this.authorServant = new AuthorServant();
 	}
-
-	public String registerBook(String args) {
+	
+	public String registerAuthor(String args) {
 		JSONParser parser = new JSONParser();
 		JSONObject jsonObject = null;
 		
@@ -30,28 +29,34 @@ public class BookSkeleton {
 			e.printStackTrace();
 		}
 		
-		Book book = new Book(
+		Author author = new Author(
 			((Long) jsonObject.get("code")).intValue(),
-			(String) jsonObject.get("titulo"),
-			(String) jsonObject.get("genre"),
-			(String) jsonObject.get("author"),
-			((Long)  jsonObject.get("num_copies")).intValue()
+			(String) jsonObject.get("nome"),
+			(String) jsonObject.get("email")
 		);
 		
-		return bookServant.registerBook(book);
+		return authorServant.registerAuthor(author);
 	}
 	
-	public String listBooks(String args) {
+	public String listAuthors(String args) {
 		
-		ArrayList<Book> bookList = bookServant.listBooks();
+		ArrayList<Author> authorList = authorServant.listAuthors();
 		
 		//transformando o array author em string Json
 		JSONArray array = new JSONArray();//cria um array vazio em json
 	
-		for(Book book: bookList) {
-			array.add(book.toJson());
+		for(Author author: authorList) {
+			array.add(author.toJson());
 		}
         return array.toJSONString();
 		
 	}
+	
+	
+	
+	
+	
+	
+	
+
 }

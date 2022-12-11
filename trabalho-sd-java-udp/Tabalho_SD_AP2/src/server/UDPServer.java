@@ -20,38 +20,57 @@ public class UDPServer {
 		DatagramPacket request = null;
 		DatagramPacket reply = null;
 
-		int bufferSize = 1024;
-		byte[] buffer = new byte[bufferSize];
-
+		
+		//salva todas as msgs recebida pelo servidor,
+		//evita que uma msgs com id repetido seja processado novamente.
 		Map<Integer, String> history = new HashMap<>();
 		Dispatcher dispatcher = new Dispatcher();
-
+		
+		
 		while (true) {
+			
+			int bufferSize = 1024;
+			byte[] buffer = new byte[bufferSize];
+			
 			System.out.println("Esperando requisição");
 
 			request = new DatagramPacket(buffer, bufferSize);
 
 			clientSocket.receive(request);
 			System.out.println("Requisição : " + (new String(request.getData())));
-
+			
 			Message requestMessage = unpackMessage(request.getData());
-			System.out.println("Requisição : " + requestMessage);
-			Message responseMessage = dispatcher.selectSkeleton(requestMessage);
-
-			byte[] packedMessage = packMessage(responseMessage);
-
-			DatagramPacket sendPacket = new DatagramPacket(packedMessage, packedMessage.length, request.getAddress(),
-					request.getPort());
-
-			try {
-				System.out.println("enviando pacote para o cliente");
-				clientSocket.send(sendPacket);
-			} catch (IOException e) {
-				e.printStackTrace();
+	
+			if(history.containsKey(requestMessage.getRequestId())) {
+				System.out.println("Mensagem duplicada!");
 			}
+			else {
+				// Adiciona a msg no historico
+				history.put(requestMessage.getRequestId(), requestMessage.getMethod());
+				
+				Message responseMessage = dispatcher.invoke(requestMessage);
+
+				sendReply(responseMessage, clientSocket, request);
+			}
+		
 		}
 	}
+	
+	private static void sendReply(Message responseMessage, DatagramSocket clientSocket, DatagramPacket request) {
+		
+		byte[] packedMessage = packMessage(responseMessage);
 
+		DatagramPacket sendPacket = new DatagramPacket(packedMessage, packedMessage.length, request.getAddress(),
+				request.getPort());
+
+		try {
+			System.out.println("enviando pacote para o cliente");
+			clientSocket.send(sendPacket);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	private static byte[] packMessage(Message message) {
 		return message.toJson().getBytes();
 	}
@@ -68,4 +87,6 @@ public class UDPServer {
 		}
 		return response;
 	}
+	
+	
 }

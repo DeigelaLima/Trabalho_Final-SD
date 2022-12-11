@@ -1,45 +1,49 @@
 package client.proxy;
 
 import java.net.SocketTimeoutException;
+import java.util.ArrayList;
 
 import org.json.simple.parser.ParseException;
 
 import client.UDPClient;
-import client.model.Book;
+import client.model.Author;
 import client.model.Message;
+import server.skeleton.AuthorSkeleton;
 
-public class ProxyBook {
-	
-	private int requestId = 0;
+public class ProxyAuthor {
+
+	private int requestId = 1;
 	UDPClient udpclient;
 	
-	public ProxyBook(UDPClient udpclient) {
+	public ProxyAuthor(UDPClient udpclient) {
 		super();
 		this.udpclient = udpclient;
 	}
-
-	public String registerBook(Book book) {
-		Message response = doOperation("Cadastro", "Metodo_cadastro_livro", book.toJson());
+	
+	public String registerAuthor(Author author) {
+		Message responseAuthor = doOperation("Cadastro", "Metodo_cadastro_author", author.toJson());
 
 		String response_message = null;
 		try {
-			response_message = response.getArguments().toString();
+			response_message = responseAuthor.getArguments().toString();
 		} catch (java.lang.NullPointerException e) {
 			System.out.println("Servidor não respondeu!, Tente novamente mais tarde.");
 		}
 		return response_message;
 	}
 	
-	public String listBooks() {
-		Message response = doOperation("List", "Metodo_listar_books", "");
+	public String listAuthors(){
+		Message responseListAuthor = doOperation("List", "Metodo_listar_authors", "");
 
 		String response_message = null;
 		try {
-			response_message = response.getArguments().toString();
+			response_message = responseListAuthor.getArguments();
+			System.out.println(response_message);
 		} catch (java.lang.NullPointerException e) {
 			System.out.println("Servidor não respondeu!, Tente novamente mais tarde.");
 		}
 		return response_message;
+		
 	}
 	
 	private Message doOperation(String objectRef, String method, String args) {
@@ -83,6 +87,5 @@ public class ProxyBook {
 		Message response = Message.buildFromJson(jsonMessage);
 		return response;
 	}
+
 }
-
-

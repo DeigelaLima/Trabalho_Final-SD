@@ -81,4 +81,6 @@ public class Message {
 	public void setArguments(String arguments) {
 		this.arguments = arguments;
 	}
+
+	
 }

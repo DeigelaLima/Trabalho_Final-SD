@@ -5,12 +5,14 @@ import org.json.simple.JSONObject;
 public class Book {
 	private int code;
 	private String genre;
+	private String titulo;
 	private String author;
 	private int num_copies;
 
-	public Book(int code, String genre, String author, int num_copies) {
+	public Book(int code, String titulo, String genre, String author, int num_copies) {
 		super();
 		this.code = code;
+		this.titulo = titulo;
 		this.genre = genre;
 		this.author = author;
 		this.num_copies = num_copies;
@@ -19,6 +21,7 @@ public class Book {
 	public String toJson() {
 		JSONObject obj = new JSONObject();
         obj.put("code", code);
+        obj.put("titulo", titulo);
         obj.put("genre", genre);
         obj.put("author", author);
         obj.put("num_copies", num_copies);
@@ -34,6 +37,12 @@ public class Book {
 	}
 	public void setCode(int code) {
 		this.code = code;
+	}
+	public String getTitulo() {
+		return titulo;
+	}
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
 	}
 	public String getGenre() {
 		return genre;
@@ -56,6 +65,7 @@ public class Book {
 
 	@Override
 	public String toString() {
-		return "Book [code=" + code + ", genre=" + genre + ", author=" + author + ", num_copies=" + num_copies + "]";
+		System.out.println("asdnn");
+		return "Book [code=" + code + ", titulo=" + titulo + ", genre=" + genre + ", author=" + author + ", num_copies=" + num_copies + "]";
 	}
 }
