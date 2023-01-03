@@ -1,4 +1,6 @@
 ## Trabalho final da disciplina de Sistemas Distribuídos - SD 
+
+**Equipe:** Deigela Lima, Iuri Breno e Robert Vinícius 
 # Sistema Bibliotecário
 
 ## Visão geral do serviço remoto
