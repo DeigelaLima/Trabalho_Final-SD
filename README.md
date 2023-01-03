@@ -22,13 +22,13 @@ name e email.
 ## Descrição dos Dados transmitidos
 
 Os dados saem da classe principal em forma de um objeto, depois chega na classe *Proxy*, na qual chamamos nosso método *doOperation* para estarmos passando os parâmetros do serviço remoto à ser executado para tipo *Byte*, assim realizando o empacotamento da mensagem com as seguintes informações: *idRequest*, objeto de referência do método e os argumentos do
-objeto. Com esses dados, é acionado o nosso *Despachante*, que irá invocar os métodos remotos que forem acionados,
+objeto.<p> 
+Com esses dados, é acionado o nosso *Despachante*, que irá invocar os métodos remotos que forem acionados,
 e só assim realizar a conversão do nosso objeto para formato Json, dentro das classes do pacote *server.skeleton*, 
-na qual irá repassar esses dados para o pacote *server.servant* e estar realizando, por exemplo, a operação cadastrar um usuário. Com a requisição finalizada na parte do servidor, será emitida uma mensagem de confirmação de tarefa bem sucedida
-ou não. Um outro ponto importante nesta questão de transmissão, são que todos os dados que serão transmitidos entre Cliente
-e Servidor serão de forma serializada.
+na qual irá repassar esses dados para o pacote *server.servant* e estar realizando, por exemplo, a operação cadastrar
+um usuário. Com a requisição finalizada na parte do servidor, será emitida uma mensagem de confirmação de tarefa bem sucedida ou não. Um outro ponto importante nesta questão de transmissão, são que todos os dados que serão transmitidos entre Cliente e Servidor serão de forma serializada.
 
-## Descrição das classes implementadas nos lados Cliente e Servidor
+## Descrição das classes implementadas no lado Cliente e Servidor
 
 **CLIENTE:** <p>
 
@@ -54,7 +54,7 @@ na classe Servente e empacota a resposta recebida do servente.
 **Servente:** Nessa classe é onde os métodos são realmente executados. Ao receber a requisição de algum dos métodos de cadastro, ele cria um
 novo objeto na classe referente ao método com os argumentos passados pelo esqueleto.
 
-## Descrever o modelo de falhas
+## Modelo de falhas
 
 O UDPServer não estabelece uma conexão com UDPClient ou vice-versa e assim impossibilita a comunicação entre si.
 **packedReply** - Pode ocorrer do usuário, por exemplo, tentar colocar o nome do livro no campo código do livro,
